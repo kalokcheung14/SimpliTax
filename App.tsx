@@ -13,85 +13,41 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
-
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+function calcTax(pretax: string) {
+  return (pretax * 1.13).toFixed(3);
 }
 
-function App(): React.JSX.Element {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
+  const [pretax, onPretaxPriceChanged] = React.useState('0');
+  const [aftertax, ] = React.useState('0');
 
   return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
+    <SafeAreaView style={[
+      styles.sectionContainer,
+      {
+        flex: 1,
+        flexDirection: 'column',
+        alignItems: 'center',
+        jutifyContents: 'space-around',
+      }
+    ]}>
+      <Text style={styles.sectionTitle}>Enter the price before tax:</Text>
+      <TextInput
+         value={pretax}
+         style={styles.input}
+         onChangeText={onPretaxPriceChanged}
+         keyboardType="numeric"
+       />
+      <Text style={styles.sectionTitle}>The price after tax:</Text>
+      <Text style={styles.sectionTitle}>{calcTax(pretax)}</Text>
     </SafeAreaView>
   );
 }
@@ -102,7 +58,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 24,
   },
   sectionTitle: {
-    fontSize: 24,
+    fontSize: 25,
     fontWeight: '600',
   },
   sectionDescription: {
@@ -112,6 +68,15 @@ const styles = StyleSheet.create({
   },
   highlight: {
     fontWeight: '700',
+  },
+  input: {
+    height: 80,
+    margin: 10,
+    fontSize: 25,
+    borderWidth: 2,
+    padding: 10,
+    textAlign: 'center',
+    width: '80%',
   },
 });
 
